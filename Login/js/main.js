@@ -2,9 +2,17 @@ const passwordTF = document.getElementById('passwordTF')
 const emailTF = document.getElementById('emailTF')
 const loginBTN = document.getElementById('loginBTN')
 loginBTN.addEventListener('click', login);
-let userJSON= window.localStorage.getItem('client');
 
 function login() {
+    if (!emailTF.value.trim()) {
+        alert('Por favor ingrese su correo electrónico');
+        return;
+    }
+    
+    if (!passwordTF.value.trim()) {
+        alert('Por favor ingrese su contraseña');
+        return;
+    }
         let email= emailTF.value;
         let password= passwordTF.value;
     
@@ -25,20 +33,12 @@ async function postLogin(LoginRequest){
        body: json
     });
  
-    let data= await response.json()
+    let data = await response.json()
     if(response.ok) {
         let client= JSON.stringify(data);
         window.localStorage.setItem('client', client.name);
-        window.location.href ='../Home/index.html'
+        window.location.href = '../Home/index.html';
      } else {
-         if(response.status === 401) {
-            alert(data.message);
-     } else {
-        //Si es otro error
-         console.error('Request error: ', response.status);
-         alert('An error occurred in the request. Please try again later.');
-     }
-  }
-  emailTF.value=""
-  passwordTF.value=""
+        alert(data.message);
+    }
  }

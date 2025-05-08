@@ -43,8 +43,7 @@ body, html {
   a {
     font-family: Poppins-Regular;
     font-size: 14px;
-    align-self: center;
-    line-height: 5;
+    line-height: 1.7;
     color: #666666;
     margin: 0px;
     transition: all 0.4s;
@@ -58,8 +57,8 @@ a:focus {
 }
 
 a:hover {
-  text-decoration: underline;
-  color: #020202;
+	text-decoration: none;
+  color: #57b846;
 }
 
 /*---------------------------------------------*/
@@ -68,10 +67,11 @@ h1,h2,h3,h4,h5,h6 {
 }
 
 p {
-	height: 40px;
-  text-align: center;
-  font-size: 18px;
-  line-height: 40px;
+	font-family: Poppins-Regular;
+	font-size: 14px;
+	line-height: 1.7;
+	color: #666666;
+	margin: 0px;
 }
 
 ul, li {
@@ -180,10 +180,15 @@ iframe {
   background: #fff;
   border-radius: 10px;
   overflow: hidden;
+
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between; /* Cambiar de space-between a center */
-  padding: 100px
+  justify-content: space-between;
+  padding: 177px 130px 33px 95px;
 }
 
 /*------------------------------------------------------------------
@@ -384,7 +389,7 @@ iframe {
 
 @media (max-width: 992px) {
   .wrap-login100 {
-    padding: 100px 100px 100px 100px;
+    padding: 177px 90px 33px 85px;
   }
 
   .login100-pic {
