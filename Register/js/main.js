@@ -16,7 +16,10 @@ function registro() {
         alert('Por favor ingrese su correo electrónico');
         return;
     }
-    
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailTF.value.trim())) {
+        alert("Por favor ingrese un correo electrónico válido");
+        return;
+    }
     else if (!passwordTF.value.trim()) {
         alert('Por favor ingrese su contraseña');
         return;
@@ -25,8 +28,11 @@ function registro() {
         alert('Por favor ingrese la confirmación de contraseña');
         return;
     }
+    
+
     else if(confirmPassTF.value!=passwordTF.value){
         alert('Las contraseñas no son las mismas')
+        return;
     }
     else{
         let name = nameTF.value;
