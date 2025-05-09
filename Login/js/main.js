@@ -37,7 +37,7 @@ async function postLogin(LoginRequest){
     if(response.ok) {
         let client= JSON.stringify(data);
         window.localStorage.setItem('client', client.name);
-        window.location.href = '../Home/index.html';
+        window.location.href = '../Home/home.html';
      } else {
         alert(data.message);
     }
