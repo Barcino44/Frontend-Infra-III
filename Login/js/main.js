@@ -36,7 +36,7 @@ async function postLogin(LoginRequest){
     let data = await response.json()
     if(response.ok) {
         let client= JSON.stringify(data);
-        window.localStorage.setItem('client', client.name);
+        localStorage.setItem('client', data.id);
         window.location.href = '../Home/home.html';
      } else {
         alert(data.message);
