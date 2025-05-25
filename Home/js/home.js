@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', cargarProductos);
-
+let clientId = localStorage.getItem("client");
 
 async function cargarProductos(){
     let response = await fetch('http://localhost:8080/client/getProducts',{
@@ -15,7 +15,10 @@ async function cargarProductos(){
 
     }
  }
-
+const cartIcon = document.getElementById("cartIcon")
+cartIcon.addEventListener('click',() => {
+    window.location.href = '/HOME/ShoppingCart.html';
+})
  function renderizarTarjetas(productos) {
     const container = document.getElementById('productos-container');
     container.innerHTML = '';
@@ -23,7 +26,7 @@ async function cargarProductos(){
         const col = document.createElement('div');
         col.className = 'col-12 col-md-4 mb-4 d-flex'; // d-flex en la columna
         col.innerHTML = `
-            <div class="card h-100 w-100 d-flex flex-column"> <!-- altura completa -->
+            <div class="card h-100 w-100 d-flex flex-column">
                 <a href="shop-single.html">
                     <img src=${producto.imageUrl} class="card-img-top" alt="${producto.name}">
                 </a>
@@ -34,10 +37,23 @@ async function cargarProductos(){
                             <li class="h2 align-self-center text-dark">$${producto.price}</li>
                         </ul>   
                     </ul>
-                    <p class="card-text mt-auto">${producto.description}</p> <!-- empuja hacia abajo -->
+
+                    <!-- Campo de cantidad -->
+                    <div class="form-group my-2">
+                        <label for="cantidad-${producto.id}" class="form-label">Cantidad:</label>
+                        <input type="number" id="cantidad-${producto.id}" class="form-control" value="1" min="1">
+                    </div>
+
+                    <!-- Botón de agregar al carrito -->
+                    <button class="btn btn-primary mt-2 agregar-producto" data-id="${producto.id}" data-name="${producto.name}">
+                        Agregar al carrito
+                    </button>
+
+                    <p class="card-text mt-auto">${producto.description}</p>
                 </div>
             </div>
         `;
+
         container.appendChild(col);
     });
 }
@@ -79,4 +95,31 @@ function carrusel(productos) {
         `;
         carouselInner.appendChild(item);
     });
+}
+document.addEventListener('click', function (e) {
+    if (e.target && e.target.classList.contains('agregar-producto')) {
+        const productId = e.target.dataset.id;
+        const inputCantidad = document.getElementById(`cantidad-${productId}`);
+        const quantity = parseInt(inputCantidad.value, 10);
+        const productName = e.target.dataset.name;
+        if (!isNaN(quantity) && quantity > 0) {
+            console.log(`Producto ID: ${productId}, Nombre: ${productName}, Cantidad: ${quantity}`);
+            addProduct(productId, productName, quantity);
+        } else {
+            alert("Por favor ingrese una cantidad válida.");
+        }
+    }
+});
+
+
+async function addProduct(productId,itemName,quantity) {
+    let response = await fetch(`http://localhost:8080/shoppingCart/addItem/client/${clientId}/product/${productId}/quantity/${quantity}`,{
+        method: 'POST',
+        headers:{
+            'Content-Type': 'application/json'
+        }, 
+    }); 
+    if(response.ok){
+        alert(`${itemName} ha sido agregado`)
+    }
 }
