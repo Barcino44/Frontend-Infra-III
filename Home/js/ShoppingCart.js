@@ -36,7 +36,7 @@ async function loadCart(){
         row.className = 'row align-items-center mb-3';
         row.innerHTML = `
             <div class="col-md-2">
-                <img src="http://localhost:8080/${product.imageUrl}" class="card-img-top" alt="${product.name}">
+                <img src="${product.imageUrl}" class="card-img-top" alt="${product.name}">
                 </a>
             </div>
             <div class="col-md-3"><strong>${product.name}</strong><br><small>${product.description}</small></div>
