@@ -25,7 +25,7 @@ async function cargarProductos(){
         col.innerHTML = `
             <div class="card h-100 w-100 d-flex flex-column"> <!-- altura completa -->
                 <a href="shop-single.html">
-                    <img src="http://localhost:8080${producto.imageUrl}" class="card-img-top" alt="${producto.name}">
+                    <img src=${producto.imageUrl} class="card-img-top" alt="${producto.name}">
                 </a>
                 <div class="card-body d-flex flex-column">
                     <ul class="list-unstyled d-flex justify-content-between">
@@ -66,7 +66,7 @@ function carrusel(productos) {
             <div class="container">
                 <div class="row p-5">
                     <div class="mx-auto col-md-8 col-lg-6 order-lg-last">
-                        <img class="img-fluid" src="http://localhost:8080${producto.imageUrl}" alt="${producto.name}">
+                        <img class="img-fluid" src="${producto.imageUrl}" alt="${producto.name}">
                     </div>
                     <div class="col-lg-6 mb-0 d-flex align-items-center">
                         <div class="text-align-left align-self-center">
