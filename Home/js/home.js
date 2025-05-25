@@ -17,7 +17,7 @@ async function cargarProductos(){
  }
 const cartIcon = document.getElementById("cartIcon")
 cartIcon.addEventListener('click',() => {
-    window.location.href = '/HOME/ShoppingCart.html';
+    window.location.href = '/home/ShoppingCart.html';
 })
  function renderizarTarjetas(productos) {
     const container = document.getElementById('productos-container');
