@@ -90,4 +90,127 @@ async function eliminateItem(itemId){
     
 
 }
+function createCheckoutModal() {
+    if (document.getElementById('checkoutModal')) return;
+
+    const modalHtml = `
+    <div class="modal fade" id="checkoutModal" tabindex="-1" aria-labelledby="checkoutModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <form id="checkoutForm" class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="checkoutModalLabel">Finalizar Compra</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+          </div>
+          <div class="modal-body">
+              <div class="mb-3">
+              <label for="name" class="form-label">Nombre</label>
+              <input type="text" class="form-control" id="name" name="name" required>
+              </div>
+          </div>          
+          
+          <div class="modal-body">
+            <div class="mb-3">
+            <label for="email" class="form-label">Correo electrónico</label>
+            <input type="email" class="form-control" id="email" name="email" required>
+            </div>
+          </div>
+          
+          <div class="modal-body">
+            <div class="mb-3">
+            <label for="phone" class="form-label">Teléfono</label>
+            <input type="tel" class="form-control" id="phone" name="phone" required>
+            </div>
+          </div>    
+          
+          
+                
+
+          
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="address" class="form-label">Dirección de envío</label>
+              <input type="text" class="form-control" id="address" name="address" required>
+            </div>
+            <div class="mb-3">
+              <label for="paymentMethod" class="form-label">Método de pago</label>
+              <select class="form-select" id="paymentMethod" name="paymentMethod" required>
+                <option value="">Selecciona...</option>
+                <option value="Tarjeta">Tarjeta</option>
+                <option value="Efectivo">Efectivo</option>
+                <option value="Transferencia">Transferencia</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="notes" class="form-label">Notas adicionales</label>
+              <textarea class="form-control" id="notes" name="notes" rows="2"></textarea>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-success">Confirmar compra</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    `;
+    document.body.insertAdjacentHTML('beforeend', modalHtml);
+
+
+    document.getElementById('checkoutForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        await submitCheckoutForm();
+    });
+}
+
+
+function finalizarCompra() {
+    createCheckoutModal();
+    const modal = new bootstrap.Modal(document.getElementById('checkoutModal'));
+    modal.show();
+}
+
+//Envia el formulario al back
+async function submitCheckoutForm() {
+    const clientId = localStorage.getItem("client");
+    const address = document.getElementById('address').value;
+    const paymentMethod = document.getElementById('paymentMethod').value;
+    const notes = document.getElementById('notes').value;
+
+    if (!address || !paymentMethod) {
+        alert("Por favor, completa todos los campos obligatorios.");
+        return;
+    }
+
+    const submitBtn = document.querySelector('#checkoutForm button[type="submit"]');
+    if (submitBtn) submitBtn.disabled = true;
+
+    try {
+        const response = await fetch(`http://localhost:8080/shoppingCart/checkout/client/${clientId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                address,
+                paymentMethod,
+                notes
+            })
+        });
+
+        if (response.ok) {
+            // Limpia el carrito
+            carrito = [];
+            showCart();
+            bootstrap.Modal.getInstance(document.getElementById('checkoutModal')).hide();
+            alert("¡Compra finalizada con éxito! Gracias por tu compra.");
+        } else {
+            const errorMsg = await response.text();
+            alert("Error al finalizar la compra: " + errorMsg);
+        }
+    } catch (error) {
+        alert("Error de conexión al finalizar la compra.");
+    } finally {
+        if (submitBtn) submitBtn.disabled = false;
+    }
+}
 
