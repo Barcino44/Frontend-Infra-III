@@ -1,4 +1,4 @@
-# FRONTEND:
+# Frontend
 
 Su estructura consta de 3 carpetas (Home, Register y Login):
 
