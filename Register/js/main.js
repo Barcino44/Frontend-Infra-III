@@ -28,7 +28,6 @@ function registro() {
         alert('Por favor ingrese la confirmación de contraseña');
         return;
     }
-    
 
     else if(confirmPassTF.value!=passwordTF.value){
         alert('Las contraseñas no son las mismas')
